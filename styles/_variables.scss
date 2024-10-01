@@ -1,0 +1,35 @@
+$primary: #383343;
+$secondary: #E9E8EB;
+$white: #fff;
+
+$heading-1: clamp(40px, 5.5vw, 96px);
+$heading-2: clamp(30px, 4vw, 72px);
+$heading-3: 48px;
+$body: 20px;
+$action: 18px;
+
+$page-padding: 2rem;
+
+@font-face {
+  font-family: 'GT-Eesti-Display';
+  src:
+    url('../assets/fonts/GT-Eesti-Display-Regular.ttf'),
+    url('../assets/fonts/GT-Eesti-Display-Regular.otf') format('opentype'),
+    url('../assets/fonts/GT-Eesti-Display-Regular.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'GT-Eesti-Display-thin';
+  src:
+    url('../assets/fonts/GT-Eesti-Display-Thin.ttf'),
+    url('../assets/fonts/GT-Eesti-Display-Thin.otf') format('opentype'),
+    url('../assets/fonts/GT-Eesti-Display-Thin.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'GT-Super';
+  src:
+    url('../assets/fonts/GT-Super-Text-Regular-Italic.ttf'),
+    url('../assets/fonts/GT-Super-Text-Regular-Italic.otf') format('opentype'),
+    url('../assets/fonts/GT-Super-Text-Regular-Italic.woff') format('woff');
+}

@@ -12,7 +12,10 @@
     "vite": "^5.4.1"
   },
   "dependencies": {
-    "@studio-freight/lenis": "^1.0.42",
-    "gsap": "^3.12.5"
+    "gsap": "^3.12.5",
+    "install": "^0.13.0",
+    "lenis": "^1.1.13",
+    "npm": "^10.8.3",
+    "sass": "^1.79.1"
   }
 }
