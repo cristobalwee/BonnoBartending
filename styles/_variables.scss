@@ -1,14 +1,19 @@
 $primary: #383343;
 $secondary: #E9E8EB;
 $white: #fff;
+$border: #828282;
+$card-bg: #443E51;
 
 $heading-1: clamp(40px, 5.5vw, 96px);
 $heading-2: clamp(30px, 4vw, 72px);
-$heading-3: 48px;
+$heading-3: clamp(28px, 2.75vw, 48px);
+$action-heading: clamp(28px, 2.25vw, 36px);
 $body: 20px;
 $action: 18px;
 
 $page-padding: 2rem;
+$border-radius: 22px;
+$section-spacing: clamp(150px, 20vh, 180px);
 
 @font-face {
   font-family: 'GT-Eesti-Display';

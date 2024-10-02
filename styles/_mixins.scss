@@ -1,0 +1,5 @@
+@mixin primary-background {
+  background: rgba(255, 255, 255, 0.06);
+  background-blend-mode: lighten;
+  backdrop-filter: blur(40px);
+}
