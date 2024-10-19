@@ -9,11 +9,14 @@ $heading-2: clamp(30px, 4vw, 72px);
 $heading-3: clamp(28px, 2.75vw, 48px);
 $action-heading: clamp(28px, 2.25vw, 36px);
 $body: 20px;
+$body-small: 16px;
 $action: 18px;
 
 $page-padding: 2rem;
 $border-radius: 22px;
 $section-spacing: clamp(150px, 20vh, 180px);
+
+$ease: cubic-bezier(.16,.8,.32,.99);
 
 @font-face {
   font-family: 'GT-Eesti-Display';

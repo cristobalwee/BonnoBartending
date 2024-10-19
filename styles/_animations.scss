@@ -1,0 +1,23 @@
+@keyframes text-slide-up {
+  to {
+    transform: translateY(0);
+  }
+}
+
+.delay-1 {
+  > * {
+    animation-delay: 0.05s;
+  }
+}
+
+.delay-2 {
+  > * {
+    animation-delay: 0.15s;
+  }
+}
+
+.delay-3 {
+  > * {
+    animation-delay: 0.25s;
+  }
+}

@@ -3,3 +3,11 @@
   background-blend-mode: lighten;
   backdrop-filter: blur(40px);
 }
+
+@mixin add-delay($delay: 0, $multiplier: 0.1) {
+  @for $i from 0 through 9 {
+    .delay-#{$i + 1} > * {
+      animation-delay: #{$delay + ($multiplier * $i)}s;
+    }
+  }
+}

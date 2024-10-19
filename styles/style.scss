@@ -6,9 +6,9 @@
   line-height: 1.5;
   font-weight: 400;
   color: $secondary;
-  background-color: $primary;
 
   font-synthesis: none;
+  font-kerning: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -16,10 +16,20 @@
 
 body {
   margin: 0;
-  padding: $page-padding;
+  padding: 0;
+  background-color: #221E2A;
 }
 
-h1, h2, h3, h4, h5 {
+#app {
+  margin: 0;
+  position: relative;
+  padding: $page-padding;
+  background-color: $primary;
+  overflow-x: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.12);
+}
+
+h1, h2, h3, h4, h5, h6 {
   font-family: 'GT-Eesti-Display';
   line-height: 1.1;
   font-weight: bold;
@@ -79,6 +89,18 @@ nav {
   }
 }
 
+footer {
+  position: fixed;
+  z-index: -1;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem;
+}
+
 #fab {
   position: fixed;
   bottom: $page-padding;
@@ -127,13 +149,15 @@ nav {
 
 .intro {
   text-align: center;
-  max-width: 65vw;
+  max-width: 70vw;
   margin: 25vh auto 0;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   gap: 2.5rem;
+  position: relative;
+  z-index: 0;
 
   .hero-image {
     width: 95%;
@@ -145,7 +169,7 @@ nav {
 }
 
 .section {
-  max-width: 1300px;
+  max-width: 1400px;
   width: 75vw;
   margin: $section-spacing auto 0;
 }
@@ -162,16 +186,66 @@ nav {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 1.5rem;
+
+    @for $i from 0 through 2 {
+      &[data-hovered='#{$i}'] {
+        .services-card:nth-child(#{$i + 1}) {
+          transform: translateZ(50px) scale(1.03);
+          box-shadow: 0 1px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        @if $i == 0 {
+          .services-card:not(:nth-child(#{$i + 1})) {
+            transform: translateX(0.5rem);
+            transition-delay: 0.1s;
+          }
+
+          .services-card:last-child {
+            transform: translateX(0.5rem);
+            transition-delay: 0.25s;
+          }
+        } @else if $i == 1 {
+          .services-card:first-child {
+            transform: translateX(-0.5rem);
+            transition-delay: 0.1s;
+          }
+
+          .services-card:last-child {
+            transform: translateX(0.5rem);
+            transition-delay: 0.1s;
+          }
+        } @else {
+          .services-card:not(:nth-child(#{$i + 1})) {
+            transform: translateX(-0.5rem);
+            transition-delay: 0.1s;
+          }
+
+          .services-card:first-child {
+            transition-delay: 0.25s;
+          }
+        }
+      }
+    }
   }
 
   &-card {
-    gap: 8rem;
-    padding: 2.5rem;
+    position: relative;
     border-radius: $border-radius;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     background-color: $card-bg;
+    cursor: pointer;
+    transition: transform 0.5s cubic-bezier(.59,.48,.09,.8), box-shadow 0.4s ease;
+
+    p, h4 {
+      padding: 2.5rem;
+    }
+
+    &-img {
+      width: 100%;
+      mix-blend-mode: luminosity;
+    }
   }
 }
 
@@ -191,13 +265,33 @@ nav {
 
     &-pivot {
       border-bottom: solid 1px $border;
-      padding: 3.5rem 0 3.5rem 2.5rem;
+      padding: 3.5rem 2.5rem;
       display: flex;
       justify-content: space-between;
       cursor: pointer;
+      position: relative;
 
       &:first-child {
         padding-top: 0;
+      }
+
+      &.reversed {
+        position: absolute;
+        inset: 0;
+        background-color: $secondary;
+        color: $primary;
+        clip-path: inset(100% 0 0 0);
+        transition: clip-path 0.5s $ease;
+
+        &.first {
+          top: -3.5rem;
+        }
+      }
+
+      &:hover {
+        .reversed {
+          clip-path: inset(0 0 0 0);;
+        }
       }
     }
   }
@@ -214,6 +308,10 @@ nav {
 
   &-title {
     margin: 3rem 8rem 5rem;
+
+    h3 {
+      margin-bottom: 1rem;
+    }
   }
 
   &-details {
@@ -222,9 +320,166 @@ nav {
     gap: 1rem;
 
     &-card {
-      padding: 1rem;
+      padding: 2rem;
       border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
       @include primary-background;
     }
   }
 }
+
+#text-carousel {
+  font-size: 120px;
+  position: absolute;
+  bottom: 0;
+  text-wrap: nowrap;
+}
+
+.float-action {
+  float: right;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+
+  &-btn {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    @include primary-background;
+
+    > img {
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  &.large {
+    width: 65px;
+    height: 65px;
+
+    .float-action-btn {
+      top: 2rem;
+      right: 2rem;
+      width: 65px;
+      height: 65px;
+
+      > img {
+        width: 24px;
+        height: 24px;
+      }
+    }
+  }
+}
+
+.drawer-container {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  inset: 0;
+  visibility: hidden;
+  transition: visibility 0.5s step-end;
+
+  .drawer {
+    .float-action {
+      float: none;
+    }
+
+    #drawer-title {
+      .line > * {
+        animation-delay: 0.3s;
+      }
+    }
+  
+    #drawer-body {
+      @include add-delay($delay: 0.45, $multiplier: 0.05);
+    }
+
+    .rect {
+      height: 300px;
+      width: 400px;
+      background-color: $secondary;
+      border-radius: $border-radius;
+      margin-top: 2rem;
+      transform: translateY(2rem);
+      opacity: 0;
+      transition: transform 0.5s $ease 0s, opacity 0.6s $ease 0s;
+    }
+  }
+
+  &.open {
+    visibility: visible;
+    transition: visibility 0.5s step-start;
+
+    .overlay {
+      opacity: 1;
+    }
+
+    .drawer {
+      transform: translateY(0);
+      transition: transform 0.5s $ease;
+
+      .rect {
+        transform: translateY(0);
+        opacity: 0.25;
+        transition: transform 0.5s $ease 0.8s, opacity 0.6s $ease 0.85s;
+      }
+    }
+  }
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.25);
+  opacity: 0;
+  backdrop-filter: blur(6px);
+  transition: opacity 0.5s ease;
+}
+
+.drawer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 4rem;
+  transform: translateY(100%);
+  transition: transform 0.7s $ease;
+  @include primary-background;
+
+  h3 {
+    margin-bottom: 1rem;
+  }
+  
+  p {
+    max-width: 30em;
+    margin-bottom: 1rem;
+  }
+}
+
+.line {
+  overflow: hidden;
+  position: relative;
+  
+  > * {
+    transform: translateY(100%);
+    animation: text-slide-up 0.7s $ease forwards;
+  }
+}
+
+@keyframes text-slide-up {
+  to {
+    transform: translateY(0);
+  }
+}
+
+@include add-delay($delay: 0.05, $multiplier: 0.1);
