@@ -1,18 +1,37 @@
-export default function InitFab() {
-  const primaryBtn = document.querySelector('.btn-primary-large');
-  const fabThreshold = document.querySelector('#fab-threshold');
-  const fab = document.querySelector('#fab');
+import gsap from "gsap";
+import { elasticEase } from "./constants";
 
-  const fabObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) {
-        fab.classList.remove('hidden');
-      } else {
-        fab.classList.add('hidden');
-      }
-    });
+export function ShowFab(fabBackground, fabTitle) {
+  gsap.to(fabBackground, {
+    duration: 1,
+    ease: elasticEase,
+    opacity: 1,
+    scale: 1, 
+    y: 0,
   });
+  gsap.to(fabTitle, {
+    duration: 1,
+    ease: elasticEase,
+    opacity: 1,
+    scale: 1, 
+    y: 0,
+    delay: 0.05,
+  });
+}
 
-  fabObserver.observe(primaryBtn);
-  fabObserver.observe(fabThreshold);
+export function HideFab(fabBackground, fabTitle) {
+  gsap.to(fabBackground, {
+    duration: 0.8,
+    ease: elasticEase,
+    opacity: 0,
+    scale: 0.6, 
+    y: '40%'
+  });
+  gsap.to(fabTitle, {
+    duration: 0.6,
+    ease: elasticEase,
+    opacity: 0,
+    scale: 0.8, 
+    y: '60%'
+  });
 }

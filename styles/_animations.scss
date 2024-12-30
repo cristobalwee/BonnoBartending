@@ -1,6 +1,20 @@
 @keyframes text-slide-up {
   to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes text-scroll {
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes fade-up {
+  to {
     transform: translateY(0);
+    opacity: 1;
   }
 }
 
