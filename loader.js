@@ -28,7 +28,7 @@ export default function initLoader(ease) {
   loaderTl.to(loaderCards[0], {
     ease: ease,
     scale: 0.91,
-    duration: 0.9,
+    duration: 1,
     y: -20,
     z: -1,
     backgroundColor: '#413c4e'
@@ -47,7 +47,7 @@ export default function initLoader(ease) {
   loaderTl.to(loaderCards[0], {
     ease: ease,
     scale: 0.8,
-    duration: 0.9,
+    duration: 1,
     y: -36,
     z: -2,
     backgroundColor: '#3c3748'
@@ -55,7 +55,7 @@ export default function initLoader(ease) {
   loaderTl.to(loaderCards[1], {
     ease: ease,
     scale: 0.91,
-    duration: 0.9,
+    duration: 1,
     y: -20,
     z: -1,
     backgroundColor: '#413c4e'

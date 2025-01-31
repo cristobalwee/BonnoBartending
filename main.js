@@ -8,18 +8,19 @@ import BeerImg from './assets/beer.png';
 import PlusIcon from './assets/plus.svg';
 import CloseIcon from './assets/close.svg';
 import EyeIcon from './assets/eye.svg';
+import ArrowExt from './assets/arrow-ext.svg';
 import OldFashioned from './assets/old_fashioned.png';
 import French from './assets/french_75.png';
 import Negroni from './assets/negroni.png';
 import FloatAction from './components/floatAction';
 import Lenis from 'lenis';
-import SplitType from 'split-type'
+import SplitType from 'split-type';
 import { gsap } from 'gsap';
 import { Flip } from "gsap/Flip";
 
 import './styles/style.scss';
 import 'lenis/dist/lenis.css';
-import addDelay from './addDelay';
+import { addDelay, detectSwipe, loadImage, splitAndAnimate } from './utils';
 import InitSectionObservers from './sectionObservers';
 import InitCursor from './cursor';
 import InitLoader from './loader';
@@ -108,19 +109,19 @@ app.innerHTML = `
   <div class='certs section'>
     <p>Certifications</p>
     <div class='certs-detail'>
-      <div class='certs-detail-pivot' data-cursor='view'>
+      <div class='certs-detail-pivot' data-cursor='view' tabindex='0'>
         <h4 class='strong'>Arizona Title 4 Liquor License</h4>
         <p>2023</p>
       </div>
-      <div class='certs-detail-pivot' data-cursor='view'>
+      <div class='certs-detail-pivot' data-cursor='view' tabindex='0'>
         <h4 class='strong'>ANSI Food Handler's License</h4>
         <p>2023</p>
       </div>
-      <div class='certs-detail-pivot' data-cursor='view'>
+      <div class='certs-detail-pivot' data-cursor='view' tabindex='0'>
         <h4 class='strong'>ABC Bartending and Mixology Certification</h4>
         <p>2023</p>
       </div>
-      <div class='certs-detail-pivot' data-cursor='view'>
+      <div class='certs-detail-pivot' data-cursor='view' tabindex='0'>
         <h4 class='strong'>Fine Art Bartending Certificate</h4>
         <p>2022</p>
       </div>
@@ -129,11 +130,14 @@ app.innerHTML = `
   <div class='background section'>
     <div class='background-title'>
       <h3 id='background-headline'>A little more about us</h3>
-      <span class='line'></span><span class='line'></span>
-      <p id='background-body'>No catch, you’re just helping us get started. We provide professional mixology services free of charge. No catch, you’re just helping us get started. We provide professional mixology services free of charge.No catch, you’re just helping us get started. We provide professional mixology services free of charge.</p>
+      <p id='background-body'>
+        Bonno Bartending was founded by Cris Grana in 2024, primarily as a means to get some exercise and experience in mixology, and secondarily for a bit of good fun.
+        Though we do not have decades of industry experience, we strive to provide as professional and enjoyable a service as you can get, free of charge. Our main service
+        area is about a 30 mile radius from midtown Phoenix.
+      </p>
     </div>
-    <div class='background-details'>
-      <div class='background-details-inner' data-selected='1'>
+    <div class='background-details' tabindex='0'>
+      <div class='background-details-inner' data-cursor='click'>
         ${backgroundCard('1 year', 'Of bartending experience.', -4)}
         ${backgroundCard('80 hours', 'Of mixology and bartending training.', -3)}
         ${backgroundCard('500+ drinks', 'Served across different trainings.', -2)}
@@ -144,6 +148,12 @@ app.innerHTML = `
         ${backgroundCard('200+ beers', 'Tasted and logged.', 3)}
         ${backgroundCard('1 year', 'Of bartending experience.', 4)}
       </div>
+    </div>
+    <div class='background-details-indicator'>
+      <div class='background-details-indicator-position focused' data-index='0'></div>
+      <div class='background-details-indicator-position' data-index='1'></div>
+      <div class='background-details-indicator-position' data-index='2'></div>
+      <div class='background-details-indicator-position' data-index='-1'></div>
     </div>
   </div>
   <div class='section'></div>
@@ -178,19 +188,44 @@ app.innerHTML = `
     <div class='hover-cursor-content'>
       <img id='hover-cursor-icon' src='${EyeIcon}' alt='See more' />
       <p id='hover-cursor-title'>See more</p>
+      <img id='hover-cursor-ext' src='${ArrowExt}' alt='View' />
+    </div>
+  </div>
+  <div class='loader'>
+    <div class='loader-inner'>
+      <img draggable='false' src="${Logo}" class='loader-inner-logo' alt='Bonno bartending logo' />
+      <div class='loader-card'>
+        <img draggable='false' src="${Logo}" class='logo' alt='Bonno bartending logo' />
+        <img draggable='false' src="${Negroni}" class='loader-card-drink' alt='Negroni' />
+        <h4 class='strong'>Negroni</h4>
+        <img draggable='false' src="${Logo}" class='logo' alt='Bonno bartending logo' />
+      </div>
+      <div class='loader-card'>
+        <img draggable='false' src="${Logo}" class='logo' alt='Bonno bartending logo' />
+        <img draggable='false' src="${OldFashioned}" class='loader-card-drink' alt='Old fashioned' />
+        <h4 class='strong'>Old Fashioned</h4>
+        <img draggable='false' src="${Logo}" class='logo' alt='Bonno bartending logo' />
+      </div>
+      <div class='loader-card'>
+        <img draggable='false' src="${Logo}" class='logo' alt='Bonno bartending logo' />
+        <img draggable='false' src="${French}" class='loader-card-drink' alt='French 75' />
+        <h4 class='strong'>French 75</h4>
+        <img draggable='false' src="${Logo}" class='logo' alt='Bonno bartending logo' />
+      </div>
     </div>
   </div>
   <div class='drawer-container'>
     <div class='overlay'></div>
     <div class='drawer' data-lenis-prevent="true" tabindex='-1' role="dialog" aria-modal="true" aria-labelledby="drawer-title">
-      <h3 class='strong' name='drawer-title'>
-        <span id='drawer-title'></span>
-        ${FloatAction(CloseIcon, window.innerWidth > 992)}
-      </h3>
-      <p id='drawer-body'></p>
-      <div class='tag-row'></div>
+      <div class='drawer-content'>
+        <h3 class='strong' name='drawer-title'>
+          <span id='drawer-title'></span>
+          ${FloatAction(CloseIcon, window.innerWidth > 992)}
+        </h3>
+        <p id='drawer-body'></p>
+        <div class='tag-row'></div>
+      </div>
       <div class='drawer-images'>
-        <div class='rect'></div>
       </div>
     </div>
   </div>
@@ -230,45 +265,7 @@ app.innerHTML = `
       </form>
     </div>
   </div>
-  <div class='loader'>
-    <div class='loader-inner'>
-      <div class='loader-card'>
-        <img draggable='false' src="${Logo}" class='logo' alt='Bonno bartending logo' />
-        <img draggable='false' src="${Negroni}" class='loader-card-drink' alt='Negroni' />
-        <h4 class='strong'>Negroni</h4>
-        <img draggable='false' src="${Logo}" class='logo' alt='Bonno bartending logo' />
-      </div>
-      <div class='loader-card'>
-        <img draggable='false' src="${Logo}" class='logo' alt='Bonno bartending logo' />
-        <img draggable='false' src="${OldFashioned}" class='loader-card-drink' alt='Old fashioned' />
-        <h4 class='strong'>Old Fashioned</h4>
-        <img draggable='false' src="${Logo}" class='logo' alt='Bonno bartending logo' />
-      </div>
-      <div class='loader-card'>
-        <img draggable='false' src="${Logo}" class='logo' alt='Bonno bartending logo' />
-        <img draggable='false' src="${French}" class='loader-card-drink' alt='French 75' />
-        <h4 class='strong'>French 75</h4>
-        <img draggable='false' src="${Logo}" class='logo' alt='Bonno bartending logo' />
-      </div>
-    </div>
-  </div>
-`
-
-function splitAndAnimate() {
-  SplitType.revert('#intro-title');
-  SplitType.revert('#about-text');
-  SplitType.revert('#background-headline');
-  SplitType.revert('#background-body');
-
-  SplitType.create('#intro-title', { types: 'words,lines' });
-  SplitType.create('#about-text', { types: 'words,lines' });
-  SplitType.create('#background-headline', { types: 'words,lines' });
-  SplitType.create('#background-body', { types: 'words,lines' });
-
-  addDelay('.intro');
-  addDelay('.about');
-  addDelay('.background');
-}
+`;
 
 const fastScrollElement = document.querySelector('.fast-scroll');
 const heroImage = document.querySelector('.hero-image');
@@ -277,6 +274,7 @@ const springEase = 'expo.out'; //"elastic(0.3, 1)";
 
 const footer = document.querySelector('footer');
 const logo = document.querySelector('#logo');
+const logoLoader = document.querySelector('.loader-inner-logo');
 
 const drawerClose = document.querySelector('.drawer .float-action-btn');
 const modalClose = document.querySelector('.modal .float-action-btn');
@@ -304,10 +302,18 @@ const setCursorData = (elem) => {
   const attr = elem.getAttribute('data-cursor');
   const title = document.querySelector('#hover-cursor-title');
   const icon = document.querySelector('#hover-cursor-icon');
-  const { title: titleData, icon: iconData } = cursorData[attr];
+  const ext = document.querySelector('#hover-cursor-ext');
+  const { title: titleData, icon: iconData, external = false } = cursorData[attr];
 
   title.innerHTML = titleData;
-  icon.src = iconData;
+  if (external) {
+    ext.style.display = 'block';
+    icon.style.display = 'none';
+  } else {
+    ext.style.display = 'none';
+    icon.style.display = 'block';
+    icon.src = iconData;
+  }
 };
 
 let isHovering = false;
@@ -316,18 +322,15 @@ let mouseY = 0;
 
 logo.addEventListener('click', () => {
   lenis.scrollTo(0);
+  isHovering = false;
+  cancelCursorAnim();
+  HideFab(cursorBackground, cursorTitle);
 });
 
 logo.addEventListener('mouseenter', () => {
-  const attr = logo.getAttribute('data-cursor');
-  const title = document.querySelector('#hover-cursor-title');
-  const icon = document.querySelector('#hover-cursor-icon');
+  if (!window.scrollY) return;
 
-  const { title: titleData, icon: iconData } = cursorData[attr];
-
-  title.innerHTML = titleData;
-  icon.src = iconData;
-
+  setCursorData(logo);
   isHovering = true;
   setTimeout(() => {
     if (isHovering) ShowFab(cursorBackground, cursorTitle);
@@ -352,23 +355,17 @@ document.addEventListener("mousemove", (event) => {
   });
 });
 
-// InitLoader(springEase);
-InitSectionObservers('.about');
-InitSectionObservers('.services', window.innerWidth > 992 ? 0.6 : 0.2);
-InitSectionObservers('.background', 0.1);
-InitCursor();
-
-document.fonts.ready.then(() => {
-  InitLoader(springEase);
-  splitAndAnimate();
-  LandingTimeline(lenis);
+loadImage('./assets/logo-dark.svg').then(() => {
+  logoLoader.classList.add('visible');
 });
 
-let lastWidth = window.innerWidth;
-window.addEventListener('resize', () => {
-  if (window.innerWidth !== lastWidth) {
+document.fonts.ready.then(() => {
+  console.log('fonts loaded');
+  setTimeout(() => {
+    InitLoader(springEase);
     splitAndAnimate();
-  }
+    LandingTimeline(lenis);
+  }, 800);
 });
 
 const toggleDrawer = (open) => {
@@ -423,7 +420,6 @@ servicesCards.forEach((card, i) => {
     setTimeout(() => {
       if (isHovering) ShowFab(cursorBackground, cursorTitle);
     }, 100);
-    console.log(card.getAttribute('data-cursor'));
   });
 
   card.addEventListener('mouseleave', () => {
@@ -438,16 +434,29 @@ servicesCards.forEach((card, i) => {
     const title = document.querySelector('#drawer-title');
     const body = document.querySelector('#drawer-body');
     const tags = document.querySelector('.tag-row');
+    const images = document.querySelector('.drawer-images');
 
-    const { title: titleData, body: bodyData, tags: tagData } = drawerData[cardIdx];
+    const { title: titleData, body: bodyData, tags: tagData, data: imageData } = drawerData[cardIdx];
     let tagGroup = '';
+    let imageGroup = '';
+
     tagData.forEach(tag => {
       tagGroup += `<div class='tag'>${tag}</div>`;
+    });
+    imageData.forEach(image => {
+      const { name, img } = image;
+      imageGroup += `
+        <div class='drawer-images-entry'>
+          <img src=${img} />
+          <p>${name}</p>
+        </div>
+      `;
     });
 
     title.innerHTML = titleData;
     body.innerHTML = bodyData;
     tags.innerHTML = tagGroup;
+    images.innerHTML = imageGroup;
     SplitType.create('#drawer-title', { types: 'words,lines' });
     SplitType.create('#drawer-body', { types: 'words,lines' });
 
@@ -459,15 +468,7 @@ servicesCards.forEach((card, i) => {
 const certsPivots = Array.from(document.getElementsByClassName('certs-detail-pivot'));
 certsPivots.forEach(cert => {
   cert.addEventListener('mouseenter', () => {
-    const attr = cert.getAttribute('data-cursor');
-    const title = document.querySelector('#hover-cursor-title');
-    const icon = document.querySelector('#hover-cursor-icon');
-
-    const { title: titleData, icon: iconData } = cursorData[attr];
-
-    title.innerHTML = titleData;
-    icon.src = iconData;
-
+    setCursorData(cert);
     isHovering = true;
     setTimeout(() => {
       if (isHovering) ShowFab(cursorBackground, cursorTitle);
@@ -482,15 +483,23 @@ certsPivots.forEach(cert => {
 });
 
 let carouselIdx = 0;
+let carouselIsAnimating = false;
 const backgroundDetails = document.querySelector('.background-details');
 const carousel = document.querySelector('.background-details-inner');
-backgroundDetails.addEventListener('click', () => {
+const moveCarousel = (direction) => {
+  console.log(direction);
   const resetCarousel = (horizontal=false) => {
     if (carouselIdx === 2) {
       if (horizontal) {
-        gsap.to(carousel, { x: `+=${Math.floor(CAROUSEL_STEP * 4)}`, duration: 0.01 });
+        gsap.set(carousel, { x: `+=${Math.floor(CAROUSEL_STEP * 4)}` });
       } else {
-        gsap.to(carousel, { y: `+=${Math.floor(CAROUSEL_STEP * 4)}`, duration: 0.01 });
+        gsap.set(carousel, { y: `+=${Math.floor(CAROUSEL_STEP * 4)}` });
+      }
+    } else if (carouselIdx === -2) {
+      if (horizontal) {
+        gsap.set(carousel, { x: `-=${Math.floor(CAROUSEL_STEP * 4)}` });
+      } else {
+        gsap.set(carousel, { y: `-=${Math.floor(CAROUSEL_STEP * 4)}` });
       }
     }
   }
@@ -503,12 +512,17 @@ backgroundDetails.addEventListener('click', () => {
     document.querySelector(`.background-details-card[data-index='-2'`).classList.add('focused');
   }
 
+  const currPos = document.querySelector(`.background-details-indicator-position[data-index='${carouselIdx}'`);
   carouselIdx = carouselIdx === 2 ? -1 : carouselIdx + 1;
-
+ 
   const currCard = document.querySelector(`.background-details-card[data-index='${carouselIdx - 1}'`);
   const nextCard = document.querySelector(`.background-details-card[data-index='${carouselIdx}'`);
+  const nextPos = document.querySelector(`.background-details-indicator-position[data-index='${carouselIdx}'`);
+
   currCard.classList.remove('focused');
   nextCard.classList.add('focused');
+  currPos.classList.remove('focused');
+  nextPos.classList.add('focused');
 
   if (window.innerWidth < 1200) {
     gsap.to(carousel, {
@@ -532,17 +546,31 @@ backgroundDetails.addEventListener('click', () => {
     cancelCursorAnim();
     HideFab(cursorBackground, cursorTitle);
   }
+};
+
+const InitCarousel = () => {
+  if (window.innerWidth < 1200) {
+    detectSwipe(backgroundDetails, moveCarousel);
+  } else {
+    backgroundDetails.addEventListener('click', () => {
+      if (!carouselIsAnimating) {
+        carouselIsAnimating = true;
+        moveCarousel(1);
+      }
+    
+      setTimeout(() => {
+        carouselIsAnimating = false;
+      }, 800);
+    });
+  }
+}
+
+backgroundDetails.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') moveCarousel();
 });
 
 backgroundDetails.addEventListener('mouseenter', () => {
-  const title = document.querySelector('#hover-cursor-title');
-  const icon = document.querySelector('#hover-cursor-icon');
-
-  const { title: titleData, icon: iconData } = cursorData['click'];
-
-  title.innerHTML = titleData;
-  icon.src = iconData;
-
+  setCursorData(carousel);
   isHovering = true;
   setTimeout(() => {
     if (isHovering) ShowFab(cursorBackground, cursorTitle);
@@ -592,6 +620,25 @@ primaryBtns.forEach((btn, i) => {
     toggleModal(true);
   });
 });
+
+let lastWidth = window.innerWidth;
+let resizeTimeout;
+window.addEventListener('resize', () => {
+  if (window.innerWidth !== lastWidth) {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      splitAndAnimate();
+      InitCarousel();
+    }, 300);
+  }
+});
+
+// InitLoader(springEase);
+InitSectionObservers('.about');
+InitSectionObservers('.services', window.innerWidth > 992 ? 0.6 : 0.2);
+InitSectionObservers('.background', 0.4);
+InitCursor();
+InitCarousel();
 
 app.style.marginBottom = footer.offsetHeight + 'px';
 

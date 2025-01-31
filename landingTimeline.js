@@ -10,26 +10,26 @@ export default function LandingTimeline(lenis) {
     document.body.classList.add('loaded');
   }, LOAD_TIME);
 
-  setTimeout(() => {
-    // const toAnim = Array.from(intro.querySelectorAll('.line'));
-    // toAnim.forEach((line, i) => {
-    //   let objToAnim = line;
-    //   const words = Array.from(line.querySelectorAll('.word'));
+  // setTimeout(() => {
+  //   const toAnim = Array.from(intro.querySelectorAll('.line'));
+  //   toAnim.forEach((line, i) => {
+  //     let objToAnim = line;
+  //     const words = Array.from(line.querySelectorAll('.word'));
 
-    //   if (words.length) {
-    //     objToAnim = words;
-    //   }
+  //     if (words.length) {
+  //       objToAnim = words;
+  //     }
 
-    //   gsap.to(objToAnim, {
-    //     duration: 1.2,
-    //     ease: 'elastic(0.3, 1)',
-    //     delay: 0.5 + (i * 0.1),
-    //     opacity: 1,
-    //     scale: 1, 
-    //     y: 0
-    //   });
-    // });
-  }, LOAD_TIME + 300);
+  //     gsap.to(objToAnim, {
+  //       duration: 1.2,
+  //       ease: 'elastic(0.3, 1)',
+  //       delay: 0.5 + (i * 0.1),
+  //       opacity: 1,
+  //       scale: 1, 
+  //       y: 0
+  //     });
+  //   });
+  // }, LOAD_TIME + 300);
 
   setTimeout(() => {
     navBar.classList.remove('hidden');
