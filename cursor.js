@@ -1,8 +1,24 @@
 import { gsap } from 'gsap';
 
 export default function InitCursor() {
-  gsap.set('.floating-cursor',{ width: 0, height: 0, x: 0, y: 0 });
+  let mouseX = 0;
+  let mouseY = 0;
+  const cursor = document.querySelector('.hover-cursor');
   const buttons = document.querySelectorAll('.btn-primary');
+
+  document.addEventListener('mousemove', (event) => {
+    mouseX = event.clientX;
+    mouseY = event.clientY;
+
+    gsap.to(cursor, {
+      x: mouseX - cursor.clientWidth/2,
+      y: mouseY - cursor.clientHeight,
+      duration: 0.5,
+      ease: "power2.out"
+    });
+  });
+
+  gsap.set('.floating-cursor',{ width: 0, height: 0, x: 0, y: 0 });
 
   buttons.forEach(button => {
     const rect = button.getBoundingClientRect();

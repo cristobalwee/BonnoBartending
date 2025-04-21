@@ -5,6 +5,13 @@
   }
 }
 
+@keyframes text-slide-down {
+  to {
+    transform: translateY(1rem) scale(1);
+    opacity: 0;
+  }
+}
+
 @keyframes text-scroll {
   to {
     transform: translateX(-100%);

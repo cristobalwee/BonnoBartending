@@ -1,13 +1,22 @@
 import EyeIcon from './assets/eye.svg';
 import ArrowDownIcon from './assets/arrow-down.svg';
 import ArrowUpIcon from './assets/arrow-up.svg';
-import PearMule from './assets/pear_mule.jpg';
+import PauseIcon from './assets/pause.svg';
+import OldFashioned from './assets/old-fashioned.jpg';
+import Manhattan from './assets/manhattan.jpg';
+import Negroni from './assets/mezcal-negroni.jpg';
+import Penicillin from './assets/penicillin.jpg';
+import Pisco from './assets/pisco-sour.jpg';
 import Equilibrium from './assets/equilibrium.webp';
 import Rye from './assets/rye_on_rye.webp';
 import Bernardus from './assets/st_bernardus.jpg';
 import Smoothie from './assets/triple_smoothie.webp';
 import Esses from './assets/tiny_esses.webp';
 import Jacobs from './assets/uncle_jacobs.png';
+import ClassicMenu from './assets/classics-menu.png';
+import FavoriteMenu from './assets/favorites-menu.png';
+import SweetMenu from './assets/sweet-menu.png';
+import ShotMenu from './assets/shots-menu.png';
 
 export const drawerData = [
   { 
@@ -15,20 +24,25 @@ export const drawerData = [
     body: 'Mixing a variety of traditional and modern drinks – from AMF\'s to pisco sours. See some of our signature drinks below:',
     tags: ['Tequila', 'Mezcal', 'Bourbon'],
     data: [
-      { name: 'Pear Moscow Mule', img: PearMule },
-      { name: 'Pisco Sour', img: PearMule },
-      { name: 'Pennicilin', img: PearMule }
-    ]
+      { name: 'Mezcal Negroni', img: Negroni },
+      { name: 'Pisco Sour', img: Pisco },
+      { name: 'Classic Manhattan', img: Manhattan },
+      { name: 'Pennicilin', img: Penicillin },
+      { name: 'Old Fashioned', img: OldFashioned }
+    ],
+    entryClass: 'drawer-images-entry'
   },
   { 
     title: 'Menu creation',
     body: 'Curating specialty cocktails for any occasion, catered specifically to your liquor and flavor preferences. Our menus can be themed to particular holidays, celebrations, or seasons.',
     tags: ['Holidays', 'Birthdays', 'Seasonal'],
     data: [
-      { name: 'Pear Moscow Mule', img: PearMule },
-      { name: 'Pisco Sour', img: PearMule },
-      { name: 'Pennicilin', img: PearMule }
-    ]
+      { name: 'Speakeasy Classics', img: ClassicMenu },
+      { name: 'Bonno Favorites', img: FavoriteMenu },
+      { name: 'Sweet Creations', img: SweetMenu },
+      { name: 'Shots Menu', img: ShotMenu }
+    ],
+    entryClass: 'drawer-images-entry menus'
   },
   { 
     title: 'Beer sommelier',
@@ -41,7 +55,8 @@ export const drawerData = [
       { name: 'Praire – Tiny Esses', img: Esses },
       { name: 'Energy City – Triple Berry Smoothie', img: Smoothie },
       { name: 'Avery – Uncle Jacob\'s Stout', img: Jacobs }
-    ]
+    ],
+    entryClass: 'drawer-images-entry'
   }
 ];
 
@@ -62,6 +77,10 @@ export const cursorData = {
     title: 'See next',
     icon: ArrowDownIcon
   },
+  pause: {
+    title: 'Pause',
+    icon: PauseIcon
+  },
   scroll: {
     title: 'Scroll down',
     icon: ArrowDownIcon
@@ -70,4 +89,5 @@ export const cursorData = {
 
 export const LOAD_TIME = 4500;
 export const elasticEase = 'elastic(1, 0.9)';
-export const CAROUSEL_STEP = window.innerWidth < 1200 ? 264 : 420;
+export const CAROUSEL_STEP = 420;
+export const CAROUSEL_STEP_MOBILE = 274;

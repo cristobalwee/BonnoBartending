@@ -1,6 +1,6 @@
 import Logo from './assets/logo-dark.svg';
 import Mail from './assets/mail.svg';
-import Instagram from './assets/instagram.svg';
+import CheckmarkLarge from './assets/checkmark-large.svg';
 import Hero from './assets/hero.jpg';
 import MixologyImg from './assets/mixology.png';
 import MenuImg from './assets/menu.png';
@@ -8,26 +8,29 @@ import BeerImg from './assets/beer.png';
 import PlusIcon from './assets/plus.svg';
 import CloseIcon from './assets/close.svg';
 import EyeIcon from './assets/eye.svg';
+import PauseIcon from './assets/pause.svg';
 import ArrowExt from './assets/arrow-ext.svg';
 import OldFashioned from './assets/old_fashioned.png';
 import French from './assets/french_75.png';
 import Negroni from './assets/negroni.png';
 import FloatAction from './components/floatAction';
 import Lenis from 'lenis';
-import SplitType from 'split-type';
 import { gsap } from 'gsap';
-import { Flip } from "gsap/Flip";
 
 import './styles/style.scss';
 import 'lenis/dist/lenis.css';
-import { addDelay, detectSwipe, loadImage, splitAndAnimate } from './utils';
+import { cancelCursorAnim, loadImage, setCursorData, splitAndAnimate } from './utils';
 import InitSectionObservers from './sectionObservers';
 import InitCursor from './cursor';
 import InitLoader from './loader';
-import { drawerData, cursorData, CAROUSEL_STEP } from './constants';
 import LandingTimeline from './landingTimeline';
 import { ShowFab, HideFab } from './fab';
 import backgroundCard from './components/backgroundCard';
+import { toggleModal } from './modal';
+import { toggleDrawer } from './drawer';
+import { InitServiceCards } from './services';
+import { InitLogo } from './logo';
+import { moveCarousel } from './carousel';
 
 // https://github.com/lukePeavey/SplitType
 // https://codepen.io/rassohilber/pen/vYomWOp
@@ -40,7 +43,6 @@ import backgroundCard from './components/backgroundCard';
 // https://github.com/gdkraus/accessible-modal-dialog/blob/master/modal-window.js
 // https://github.com/medialize/ally.js/blob/master/src/maintain/tab-focus.js
 
-gsap.registerPlugin(Flip);
 const lenis = new Lenis({
   direction: 'vertical',
   smooth: true,
@@ -68,10 +70,11 @@ app.innerHTML = `
     <h1 id='intro-title'>You provide the liquor, we’ll mix it – <span class='strong word'>pro bono</span>.</h1>
     <button class='btn-primary btn-primary-large modal-btn line' type="button">
       <div class='floating-cursor'></div>
+      <div class='modal-trigger'></div>
       <div class='btn-primary-background word'></div>
       <span class='word'>Book us</span>
     </button>
-    <img src='${Hero}' class='hero-image fast-scroll line has-overflow' />
+    <img src='${Hero}' class='hero-image fast-scroll line has-overflow' alt='Hero image; a well-dressed bartender mixing a cocktail' />
   </div>
   <div class='about section'>
     <p class='line'><span class='word' style='display: block'>For free? What’s the catch?</span></p>
@@ -82,7 +85,7 @@ app.innerHTML = `
     <div class='services-grid'>
       <div class='services-card' data-index='0' data-cursor='see_more'>
         <p>
-          ${FloatAction(PlusIcon)}
+          ${FloatAction(PlusIcon, false, 'See more')}
           Mixing a variety of traditional and modern drinks – from AMF's to pisco sours.
         </p>
         <img src='${MixologyImg}' class='services-card-img' alt='A classic highball cocktail' />
@@ -90,7 +93,7 @@ app.innerHTML = `
       </div>
       <div class='services-card' data-index='1' data-cursor='see_more'>
         <p>
-          ${FloatAction(PlusIcon)}
+          ${FloatAction(PlusIcon, false, 'See more')}
           Curating specialty cocktails for any occasion, catered specifically to your liquor and flavor preferences.
         </p>
         <img src='${MenuImg}' class='services-card-img' alt='A group of classic cocktails standing side-to-side' />
@@ -98,7 +101,7 @@ app.innerHTML = `
       </div>
       <div class='services-card' data-index='2' data-cursor='see_more'>
         <p>
-          ${FloatAction(PlusIcon)}
+          ${FloatAction(PlusIcon, false, 'See more')}
           Level 1 Cicerone beer server certification, bringing a wealth of beer tasting experience.
         </p>
         <img src='${BeerImg}' class='services-card-img' alt='A crisp lager in a tall glass' />
@@ -109,22 +112,30 @@ app.innerHTML = `
   <div class='certs section'>
     <p>Certifications</p>
     <div class='certs-detail'>
-      <div class='certs-detail-pivot' data-cursor='view' tabindex='0'>
-        <h4 class='strong'>Arizona Title 4 Liquor License</h4>
-        <p>2023</p>
-      </div>
-      <div class='certs-detail-pivot' data-cursor='view' tabindex='0'>
-        <h4 class='strong'>ANSI Food Handler's License</h4>
-        <p>2023</p>
-      </div>
-      <div class='certs-detail-pivot' data-cursor='view' tabindex='0'>
-        <h4 class='strong'>ABC Bartending and Mixology Certification</h4>
-        <p>2023</p>
-      </div>
-      <div class='certs-detail-pivot' data-cursor='view' tabindex='0'>
-        <h4 class='strong'>Fine Art Bartending Certificate</h4>
-        <p>2022</p>
-      </div>
+      <a href='https://www.dropbox.com/scl/fi/0idtzorox8nn9nt4zh0o3/title4.pdf?rlkey=3ht75c4v7wt01ejv4wazvhzbg&st=tf70ucnl&dl=0' target='_blank rel='noopener noreferrer'>
+        <div class='certs-detail-pivot' data-cursor='view'>
+          <h4 class='strong'>Arizona Title 4 Liquor License</h4>
+          <p>2023</p>
+        </div>
+      </a>
+      <a href='https://www.dropbox.com/scl/fi/env8s6traikbzhejjp8xo/fhc-cert-814701.png?rlkey=vvto5xu1a5p1c3wq59alcl8d9&st=y4hjfyq6&dl=0' target='_blank rel='noopener noreferrer'>
+        <div class='certs-detail-pivot' data-cursor='view'>
+          <h4 class='strong'>ANSI Food Handler's License</h4>
+          <p>2023</p>
+        </div>
+      </a>
+      <a href='https://www.dropbox.com/scl/fi/56ys5pwxpx27qsmp48p1w/ABC-Official-Bar-Certificate.pdf?rlkey=w41urdszxeq0vg1l3daeu4xm2&st=6m1oeq7l&dl=0' target='_blank rel='noopener noreferrer'>
+        <div class='certs-detail-pivot' data-cursor='view'>
+          <h4 class='strong'>ABC Bartending and Mixology Certification</h4>
+          <p>2023</p>
+        </div>
+      </a>
+      <a href='https://www.dropbox.com/scl/fi/56ys5pwxpx27qsmp48p1w/ABC-Official-Bar-Certificate.pdf?rlkey=w41urdszxeq0vg1l3daeu4xm2&st=6m1oeq7l&dl=0' target='_blank rel='noopener noreferrer'>
+        <div class='certs-detail-pivot' data-cursor='view'>
+          <h4 class='strong'>Fine Art Bartending Certificate</h4>
+          <p>2022</p>
+        </div>
+      </a>
     </div>
   </div>
   <div class='background section'>
@@ -136,8 +147,8 @@ app.innerHTML = `
         area is about a 30 mile radius from midtown Phoenix.
       </p>
     </div>
-    <div class='background-details' tabindex='0'>
-      <div class='background-details-inner' data-cursor='click'>
+    <div class='background-details' tabindex='0' data-cursor='pause'>
+      <div class='background-details-inner'>
         ${backgroundCard('1 year', 'Of bartending experience.', -4)}
         ${backgroundCard('80 hours', 'Of mixology and bartending training.', -3)}
         ${backgroundCard('500+ drinks', 'Served across different trainings.', -2)}
@@ -149,36 +160,31 @@ app.innerHTML = `
         ${backgroundCard('1 year', 'Of bartending experience.', 4)}
       </div>
     </div>
-    <div class='background-details-indicator'>
-      <div class='background-details-indicator-position focused' data-index='0'></div>
-      <div class='background-details-indicator-position' data-index='1'></div>
-      <div class='background-details-indicator-position' data-index='2'></div>
-      <div class='background-details-indicator-position' data-index='-1'></div>
-    </div>
+    <button id='pause-carousel'><img src="${PauseIcon}" alt='Pause card carousel' /> Pause</button>
   </div>
   <div class='section'></div>
   <nav id='nav-bar' class='hidden'>
     <img src="${Logo}" id='logo' class='logo' alt='Bonno bartending logo' data-cursor='top' />
     <div class='btn-container'>
-      <button class='btn-primary mobile-hide'>
-        <div class='floating-cursor'></div>
-        <div class='btn-primary-background'></div>
-        <span>hello@bonno.bar</span>
-      </button>
-      <button class='btn-primary btn-primary-circle desktop-hide'>
-        <div class='btn-primary-background'></div>
-        <img src="${Mail}" class='logo' alt='Bonno bartending logo' />
-      </button>
-      <button class='btn-primary btn-primary-circle'>
-        <div class='floating-cursor'></div>
-        <div class='btn-primary-background'></div>
-        <img src="${Instagram}" alt='Bonno bartending logo' />
-      </button>
+      <a href='mailto:hello@bonnobartending.com' target='_blank' rel='noopener noreferrer'>
+        <button class='btn-primary mobile-hide'>
+          <div class='floating-cursor'></div>
+          <div class='btn-primary-background'></div>
+          <span>hello@bonno.bar</span>
+        </button>
+      </a>
+      <a href='mailto:hello@bonnobartending.com' target='_blank' rel='noopener noreferrer'>
+        <button class='btn-primary btn-primary-circle desktop-hide'>
+          <div class='btn-primary-background'></div>
+          <img src="${Mail}" class='logo' alt='Bonno bartending logo' />
+        </button>
+      </a>
     </div>
   </nav>
   <div id='fab'>
     <button class='btn-primary btn-primary-fab modal-btn'>
       <div class='floating-cursor'></div>
+      <div class='modal-trigger'></div>
       <div class='btn-primary-background'></div>
       <span>Book Us</span>
     </button>
@@ -219,13 +225,16 @@ app.innerHTML = `
     <div class='drawer' data-lenis-prevent="true" tabindex='-1' role="dialog" aria-modal="true" aria-labelledby="drawer-title">
       <div class='drawer-content'>
         <h3 class='strong' name='drawer-title'>
-          <span id='drawer-title'></span>
+          <span id='drawer-title'>Default title</span>
           ${FloatAction(CloseIcon, window.innerWidth > 992)}
         </h3>
-        <p id='drawer-body'></p>
+        <p id='drawer-body'>Default description. We recommend Monty Python and the Holy Grail for some light-humoured dummy text. Get ready for plenty of religious references that fail to make sense – Monty Python fans know what we mean.</p>
         <div class='tag-row'></div>
       </div>
       <div class='drawer-images'>
+        <div class='rect'></div>
+        <div class='rect'></div>
+        <div class='rect'></div>
       </div>
     </div>
   </div>
@@ -233,11 +242,11 @@ app.innerHTML = `
     <div class='overlay modal-overlay'></div>
     <div class='modal-body' data-lenis-prevent="true" tabindex='-1' role="dialog" aria-modal="true" aria-labelledby="book-title">
       <h3 class='strong' name='book-title'>
-        <span id='drawer-title'>Book Us</span>
+        <span id='modal-title'>Book Us</span>
         ${FloatAction(CloseIcon, window.innerWidth > 992)}
       </h3>
       <p id='modal-description'>Tell us a bit more about yourself and the event you're hosting. Note: our availability is limited and we grant our services on a first come first served basis, so we cannot always guarantee a reservation.</p>
-      <form class='event-form'>
+      <form id='booking-form' class='event-form'>
         <div class='event-form-row'>
           <div class='event-form-row-item'>
             <label for='name'>Your name <span class='required'>*</span></label>
@@ -254,15 +263,24 @@ app.innerHTML = `
             <input type='number' name='quantity' min='1' max='12' required/>
           </div>
           <div class='event-form-row-item'>
-            <label for='event-date'>Event date <span class='required'>*</span></label>
+            <label for='event-date'>Preferred event date <span class='required'>*</span></label>
             <input type='date' id="datePicker" name='event-date' required/>
           </div>
         </div>
-        <button class='btn-primary btn-primary-fab'>
+        <button id='submit-booking' type='submit' class='btn-primary btn-primary-fab'>
           <div class='btn-primary-background'></div>
           <span>Request</span>
         </button>
       </form>
+      <div class='modal-on-submit'>
+        <img src='${CheckmarkLarge}' />
+        <h3>Request submitted!</h3>
+        <p>Your submission was successful, we'll try to get back to you as soon as we can. If you don't receive </p>
+        <button id='modal-submit-confirm' class='btn-primary btn-primary-fab'>
+          <div class='btn-primary-background'></div>
+          <span>Got it</span>
+        </button>
+      </div>
     </div>
   </div>
 `;
@@ -273,13 +291,15 @@ const navBar = document.querySelector('#nav-bar');
 const springEase = 'expo.out'; //"elastic(0.3, 1)";
 
 const footer = document.querySelector('footer');
-const logo = document.querySelector('#logo');
 const logoLoader = document.querySelector('.loader-inner-logo');
 
 const drawerClose = document.querySelector('.drawer .float-action-btn');
 const modalClose = document.querySelector('.modal .float-action-btn');
 const overlay = document.querySelector('.overlay');
+const modal = document.querySelector('.modal');
 const modalOverlay = document.querySelector('.modal-overlay');
+const modalForm = document.querySelector('#booking-form');
+const modalSubmitConfirm = document.querySelector('#modal-submit-confirm');
 
 const fabContainer = document.querySelector('#fab');
 const fab = fabContainer.querySelector('.btn-primary-fab');
@@ -291,178 +311,22 @@ const today = new Date();
 const formattedDate = today.toISOString().slice(0, 10);
 datePicker.value = formattedDate;
 
-const cursor = document.querySelector('.hover-cursor');
 const cursorTitle = document.querySelector('.hover-cursor-content');
 const cursorBackground = document.querySelector('.hover-cursor-background');
-const cancelCursorAnim = () => {
-  gsap.killTweensOf(".hover-cursor-content");
-  gsap.killTweensOf(".hover-cursor-background");
-};
-const setCursorData = (elem) => {
-  const attr = elem.getAttribute('data-cursor');
-  const title = document.querySelector('#hover-cursor-title');
-  const icon = document.querySelector('#hover-cursor-icon');
-  const ext = document.querySelector('#hover-cursor-ext');
-  const { title: titleData, icon: iconData, external = false } = cursorData[attr];
-
-  title.innerHTML = titleData;
-  if (external) {
-    ext.style.display = 'block';
-    icon.style.display = 'none';
-  } else {
-    ext.style.display = 'none';
-    icon.style.display = 'block';
-    icon.src = iconData;
-  }
-};
 
 let isHovering = false;
-let mouseX = 0;
-let mouseY = 0;
-
-logo.addEventListener('click', () => {
-  lenis.scrollTo(0);
-  isHovering = false;
-  cancelCursorAnim();
-  HideFab(cursorBackground, cursorTitle);
-});
-
-logo.addEventListener('mouseenter', () => {
-  if (!window.scrollY) return;
-
-  setCursorData(logo);
-  isHovering = true;
-  setTimeout(() => {
-    if (isHovering) ShowFab(cursorBackground, cursorTitle);
-  }, 100);
-});
-
-logo.addEventListener('mouseleave', () => {
-  isHovering = false;
-  cancelCursorAnim();
-  HideFab(cursorBackground, cursorTitle);
-});
-
-document.addEventListener("mousemove", (event) => {
-  mouseX = event.clientX;
-  mouseY = event.clientY;
-
-  gsap.to(cursor, {
-    x: mouseX - cursor.clientWidth/2,
-    y: mouseY - cursor.clientHeight,
-    duration: 0.5,
-    ease: "power2.out"
-  });
-});
+let modalTrigger;
 
 loadImage('./assets/logo-dark.svg').then(() => {
   logoLoader.classList.add('visible');
 });
 
 document.fonts.ready.then(() => {
-  console.log('fonts loaded');
   setTimeout(() => {
     InitLoader(springEase);
     splitAndAnimate();
     LandingTimeline(lenis);
   }, 800);
-});
-
-const toggleDrawer = (open) => {
-  const drawer = document.querySelector('.drawer-container');
-  const drawerInner = document.querySelector('.drawer');
-
-  if (open) {
-    drawer.classList.add('open');
-    HideFab(cursorBackground, cursorTitle);
-    gsap.to(drawerInner, {
-      duration: 0.8,
-      ease: springEase,
-      y: 0
-    });
-    return lenis.stop();
-  }
-
-  drawer.classList.remove('open');
-  gsap.to(drawerInner, {
-    duration: 0.9,
-    ease: springEase,
-    y: '100%'
-  });
-  lenis.start();
-  setTimeout(() => {
-    SplitType.revert('#drawer-title');
-    SplitType.revert('#drawer-body');
-  }, 500);
-}
-
-const toggleModal = (open) => {
-  const modal = document.querySelector('.modal');
-
-  if (open) {
-    modal.classList.add('open');
-    HideFab(cursorBackground, cursorTitle);
-    return lenis.stop();
-  }
-
-  modal.classList.remove('open');
-  lenis.start();
-}
-
-const servicesGrid = document.querySelector('.services-grid');
-const servicesCards = Array.from(document.getElementsByClassName('services-card'));
-servicesCards.forEach((card, i) => {
-  card.addEventListener('mouseenter', () => {
-    servicesGrid.setAttribute('data-hovered', i);
-    setCursorData(card);
-
-    isHovering = true;
-    setTimeout(() => {
-      if (isHovering) ShowFab(cursorBackground, cursorTitle);
-    }, 100);
-  });
-
-  card.addEventListener('mouseleave', () => {
-    servicesGrid.removeAttribute('data-hovered');
-    isHovering = false;
-    cancelCursorAnim();
-    HideFab(cursorBackground, cursorTitle);
-  });
-
-  card.addEventListener('click', () => {
-    const cardIdx = card.getAttribute('data-index');
-    const title = document.querySelector('#drawer-title');
-    const body = document.querySelector('#drawer-body');
-    const tags = document.querySelector('.tag-row');
-    const images = document.querySelector('.drawer-images');
-
-    const { title: titleData, body: bodyData, tags: tagData, data: imageData } = drawerData[cardIdx];
-    let tagGroup = '';
-    let imageGroup = '';
-
-    tagData.forEach(tag => {
-      tagGroup += `<div class='tag'>${tag}</div>`;
-    });
-    imageData.forEach(image => {
-      const { name, img } = image;
-      imageGroup += `
-        <div class='drawer-images-entry'>
-          <img src=${img} />
-          <p>${name}</p>
-        </div>
-      `;
-    });
-
-    title.innerHTML = titleData;
-    body.innerHTML = bodyData;
-    tags.innerHTML = tagGroup;
-    images.innerHTML = imageGroup;
-    SplitType.create('#drawer-title', { types: 'words,lines' });
-    SplitType.create('#drawer-body', { types: 'words,lines' });
-
-    addDelay('.drawer');
-    toggleDrawer(true);
-  });
 });
 
 const certsPivots = Array.from(document.getElementsByClassName('certs-detail-pivot'));
@@ -482,121 +346,81 @@ certsPivots.forEach(cert => {
   });
 });
 
-let carouselIdx = 0;
-let carouselIsAnimating = false;
 const backgroundDetails = document.querySelector('.background-details');
+const carouselPause = document.querySelector('#pause-carousel');
 const carousel = document.querySelector('.background-details-inner');
-const moveCarousel = (direction) => {
-  console.log(direction);
-  const resetCarousel = (horizontal=false) => {
-    if (carouselIdx === 2) {
-      if (horizontal) {
-        gsap.set(carousel, { x: `+=${Math.floor(CAROUSEL_STEP * 4)}` });
-      } else {
-        gsap.set(carousel, { y: `+=${Math.floor(CAROUSEL_STEP * 4)}` });
-      }
-    } else if (carouselIdx === -2) {
-      if (horizontal) {
-        gsap.set(carousel, { x: `-=${Math.floor(CAROUSEL_STEP * 4)}` });
-      } else {
-        gsap.set(carousel, { y: `-=${Math.floor(CAROUSEL_STEP * 4)}` });
-      }
-    }
+
+let carouselIsAnimating = false;
+let carouselInterval;
+const setCarousel = () => {
+  if (carouselIsAnimating) {
+    carouselIsAnimating = false;
+    return clearInterval(carouselInterval);
   }
 
-  if (carouselIdx === -1) {
-    document.querySelector(`.background-details-card[data-index='2'`).classList.remove('focused');
-  }
-
-  if (carouselIdx === 1) {
-    document.querySelector(`.background-details-card[data-index='-2'`).classList.add('focused');
-  }
-
-  const currPos = document.querySelector(`.background-details-indicator-position[data-index='${carouselIdx}'`);
-  carouselIdx = carouselIdx === 2 ? -1 : carouselIdx + 1;
- 
-  const currCard = document.querySelector(`.background-details-card[data-index='${carouselIdx - 1}'`);
-  const nextCard = document.querySelector(`.background-details-card[data-index='${carouselIdx}'`);
-  const nextPos = document.querySelector(`.background-details-indicator-position[data-index='${carouselIdx}'`);
-
-  currCard.classList.remove('focused');
-  nextCard.classList.add('focused');
-  currPos.classList.remove('focused');
-  nextPos.classList.add('focused');
-
-  if (window.innerWidth < 1200) {
-    gsap.to(carousel, {
-      x: CAROUSEL_STEP * carouselIdx * -1,
-      ease: springEase,
-      duration: 1,
-      onComplete: resetCarousel,
-      onCompleteParams: [true]
-    });
-  } else {
-    gsap.to(carousel, {
-      y: CAROUSEL_STEP * carouselIdx * -1,
-      ease: springEase,
-      duration: 1,
-      onComplete: resetCarousel
-    });
-  }
-
-  if (isHovering) {
-    isHovering = false;
-    cancelCursorAnim();
-    HideFab(cursorBackground, cursorTitle);
-  }
-};
-
-const InitCarousel = () => {
-  if (window.innerWidth < 1200) {
-    detectSwipe(backgroundDetails, moveCarousel);
-  } else {
-    backgroundDetails.addEventListener('click', () => {
-      if (!carouselIsAnimating) {
-        carouselIsAnimating = true;
-        moveCarousel(1);
-      }
-    
-      setTimeout(() => {
-        carouselIsAnimating = false;
-      }, 800);
-    });
-  }
+  carouselIsAnimating = true;
+  carouselInterval = setInterval(moveCarousel, 2800);
+  console.log('animate');
 }
 
-backgroundDetails.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') moveCarousel();
-});
+const setHoverAndCarousel = (dir, dataElem) => {
+  if (dir) {
+    setCursorData(dataElem);
+    isHovering = true;
+    setTimeout(() => {
+      if (isHovering) ShowFab(cursorBackground, cursorTitle);
+    }, 100);
+    return;
+  }
 
-backgroundDetails.addEventListener('mouseenter', () => {
-  setCursorData(carousel);
-  isHovering = true;
-  setTimeout(() => {
-    if (isHovering) ShowFab(cursorBackground, cursorTitle);
-  }, 100);
-});
-
-backgroundDetails.addEventListener('mouseleave', () => {
   isHovering = false;
   cancelCursorAnim();
   HideFab(cursorBackground, cursorTitle);
+}
+
+backgroundDetails.addEventListener('click', setCarousel);
+
+backgroundDetails.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') setCarousel();
 });
 
+backgroundDetails.addEventListener('mouseenter', () => setHoverAndCarousel(1, backgroundDetails));
+
+backgroundDetails.addEventListener('mouseleave', () => setHoverAndCarousel(0, backgroundDetails));
+
+carouselPause.addEventListener('click', setCarousel);
+
+modalForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  modal.classList.add('submit');
+  emailjs.sendForm('service_vbbwvpy', 'template_o5diudg', '#booking-form').then(
+    (response) => {
+      console.log('SUCCESS!', response.status, response.text);
+    },
+    (error) => {
+      console.log('FAILED...', error);
+    },
+  );
+})
+
 drawerClose.addEventListener('click', () => {
-  toggleDrawer(false);
+  toggleDrawer(false, lenis);
 });
 
 modalClose.addEventListener('click', () => {
-  toggleModal(false);
+  toggleModal(modalTrigger.querySelector('.modal-trigger'), false, () => lenis.start());
+});
+
+modalSubmitConfirm.addEventListener('click', () => {
+  toggleModal(modalTrigger.querySelector('.modal-trigger'), false, () => lenis.start());
 });
 
 overlay.addEventListener('click', () => {
-  toggleDrawer(false);
+  toggleDrawer(false, lenis);
 });
 
 modalOverlay.addEventListener('click', () => {
-  toggleModal(false);
+  toggleModal(modalTrigger.querySelector('.modal-trigger'), false, () => lenis.start());
 });
 
 document.addEventListener('keydown', function(event) {
@@ -605,11 +429,11 @@ document.addEventListener('keydown', function(event) {
     const drawer = document.querySelector('.drawer-container');
 
     if (modal && modal.classList.contains('open')) { 
-      toggleModal(false);
+      toggleModal(modalTrigger.querySelector('.modal-trigger'), false, () => lenis.start());
     }
 
     if (drawer && drawer.classList.contains('open')) { 
-      toggleDrawer(false);
+      toggleDrawer(false, lenis);
     }
   }
 });
@@ -617,7 +441,8 @@ document.addEventListener('keydown', function(event) {
 const primaryBtns = Array.from(document.getElementsByClassName('modal-btn'));
 primaryBtns.forEach((btn, i) => {
   btn.addEventListener('click', () => {
-    toggleModal(true);
+    modalTrigger = btn;
+    toggleModal(btn, true, () => lenis.stop());
   });
 });
 
@@ -628,17 +453,26 @@ window.addEventListener('resize', () => {
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(() => {
       splitAndAnimate();
-      InitCarousel();
     }, 300);
+
+    gsap.set('.floating-cursor', { x: 0, y: 0 });
+
+    if (
+      (window.innerWidth < 1200 && lastWidth >= 1200) || 
+      (window.innerWidth >= 1200 && lastWidth < 1200)
+    ) {
+      // carouselPos = 0;
+      gsap.set(carousel, { x: 0, y: 0 });
+    }
   }
 });
 
-// InitLoader(springEase);
 InitSectionObservers('.about');
 InitSectionObservers('.services', window.innerWidth > 992 ? 0.6 : 0.2);
-InitSectionObservers('.background', 0.4);
+InitSectionObservers('.background', 0.4, setCarousel);
+InitServiceCards(lenis, isHovering);
+InitLogo(lenis, isHovering);
 InitCursor();
-InitCarousel();
 
 app.style.marginBottom = footer.offsetHeight + 'px';
 

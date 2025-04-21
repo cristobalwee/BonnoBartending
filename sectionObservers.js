@@ -1,4 +1,4 @@
-export default function InitSectionObservers(sectionQuery, threshold=1.0) {
+export default function InitSectionObservers(sectionQuery, threshold=1.0, callback) {
   const section = document.querySelector(sectionQuery);
   let isInitialLoad = true;
 
@@ -11,6 +11,7 @@ export default function InitSectionObservers(sectionQuery, threshold=1.0) {
 
       if (entry.isIntersecting) {
         section.classList.add('animate');
+        if (callback) callback();
 
         if (sectionQuery === '.background') document.querySelector('footer').classList.add('animate');
       }

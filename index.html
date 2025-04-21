@@ -1,12 +1,45 @@
 <!doctype html>
 <html lang="en" style="background-color: #383343;">
   <head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-K24GZNHR');</script>
+    <!-- End Google Tag Manager -->
+
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/assets/Favicon.svg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta property="og:title" content="Bonno Bartending">
+    <meta property="og:description" content="You provide the liquor, we’ll mix it – pro bono.">
+    <meta property="og:image" content="https://yourwebsite.com/your-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:url" content="https://yourwebsite.com/your-page">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Bonno Bartending">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Bonno Bartending">
+    <meta name="twitter:description" content="You provide the liquor, we’ll mix it – pro bono.">
+    <meta name="twitter:image" content="https://yourwebsite.com/your-image.jpg">
+    <meta name="twitter:site" content="@YourTwitterHandle">
+
+    <meta name="description" content="You provide the liquor, we’ll mix it – pro bono.">
+    <meta name="keywords" content="bartending, mixology, drinks, bar, free, pro bono">
+    <meta name="author" content="Cristobal Graña Samanez">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bonno Bartending.</title>
   </head>
   <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K24GZNHR"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
     <footer style="visibility: hidden;">
       <div class="footer-padding"></div>
       <div class="footer-content">
@@ -17,6 +50,7 @@
         </h6>
         <button class='btn-primary btn-primary-fab modal-btn'>
           <div class='floating-cursor'></div>
+          <div class='modal-trigger'></div>
           <div class='btn-primary-background'></div>
           <span>Book Us</span>
         </button>
@@ -24,5 +58,15 @@
     </footer>
     <div id="app"></div>
     <script type="module" src="/main.js"></script>
+    <script type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+    </script>
+    <script type="text/javascript">
+      (function(){
+        emailjs.init({
+          publicKey: "zNCcjpRKOzBoI7rgM",
+        });
+      })();
+    </script>
   </body>
 </html>
