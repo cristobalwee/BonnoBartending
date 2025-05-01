@@ -13,7 +13,6 @@ import ArrowExt from './assets/arrow-ext.svg';
 import OldFashioned from './assets/old_fashioned.png';
 import French from './assets/french_75.png';
 import Negroni from './assets/negroni.png';
-import FloatAction from './components/floatAction';
 import Lenis from 'lenis';
 import { gsap } from 'gsap';
 
@@ -86,7 +85,11 @@ app.innerHTML = `
     <div class='services-grid'>
       <div class='services-card' data-index='0' data-cursor='see_more'>
         <p>
-          ${FloatAction(PlusIcon, false, 'See more')}
+          <span class='float-action' tabindex='-1'>
+            <button class='float-action-btn' aria-label='See more'>
+              <img src='${PlusIcon}' alt='Plus icon' />
+            </button>
+          </span>
           Mixing a variety of traditional and modern drinks – from AMF's to pisco sours.
         </p>
         <img src='${MixologyImg}' class='services-card-img' alt='A classic highball cocktail' />
@@ -94,7 +97,11 @@ app.innerHTML = `
       </div>
       <div class='services-card' data-index='1' data-cursor='see_more'>
         <p>
-          ${FloatAction(PlusIcon, false, 'See more')}
+          <span class='float-action' tabindex='-1'>
+            <button class='float-action-btn' aria-label='See more'>
+              <img src='${PlusIcon}' alt='Plus icon' />
+            </button>
+          </span>
           Curating specialty cocktails for any occasion, catered specifically to your liquor and flavor preferences.
         </p>
         <img src='${MenuImg}' class='services-card-img' alt='A group of classic cocktails standing side-to-side' />
@@ -102,7 +109,11 @@ app.innerHTML = `
       </div>
       <div class='services-card' data-index='2' data-cursor='see_more'>
         <p>
-          ${FloatAction(PlusIcon, false, 'See more')}
+          <span class='float-action' tabindex='-1'>
+            <button class='float-action-btn' aria-label='See more'>
+              <img src='${PlusIcon}' alt='Plus icon' />
+            </button>
+          </span>
           Level 1 Cicerone beer server certification, bringing a wealth of beer tasting experience.
         </p>
         <img src='${BeerImg}' class='services-card-img' alt='A crisp lager in a tall glass' />
@@ -228,7 +239,11 @@ app.innerHTML = `
       <div class='drawer-content'>
         <h3 class='strong' name='drawer-title'>
           <span id='drawer-title'>Default title</span>
-          ${FloatAction(CloseIcon, window.innerWidth > 992)}
+          <span class='float-action${window.innerWidth > 992 ? ' large' : ''}' tabindex='-1'>
+            <button class='float-action-btn' aria-label='Close'>
+              <img src='${CloseIcon}' alt='Close icon' />
+            </button>
+          </span>
         </h3>
         <p id='drawer-body'>Default description. We recommend Monty Python and the Holy Grail for some light-humoured dummy text. Get ready for plenty of religious references that fail to make sense – Monty Python fans know what we mean.</p>
         <div class='tag-row'></div>
@@ -245,7 +260,11 @@ app.innerHTML = `
     <div class='modal-body' data-lenis-prevent="true" tabindex='-1' role="dialog" aria-modal="true" aria-labelledby="book-title">
       <h3 class='strong' name='book-title'>
         <span id='modal-title'>Book Us</span>
-        ${FloatAction(CloseIcon, window.innerWidth > 992)}
+        <span class='float-action${window.innerWidth > 992 ? ' large' : ''}' tabindex='-1'>
+            <button class='float-action-btn' aria-label='Close'>
+              <img src='${CloseIcon}' alt='Close icon' />
+            </button>
+          </span>
       </h3>
       <p id='modal-description'>Tell us a bit more about yourself and the event you're hosting. Note: our availability is limited and we grant our services on a first come first served basis, so we cannot always guarantee a reservation.</p>
       <form id='booking-form' class='event-form'>
