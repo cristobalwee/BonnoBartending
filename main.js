@@ -32,17 +32,6 @@ import { InitLogo } from './logo';
 import { moveCarousel } from './carousel';
 import { pauseContent, playContent } from './constants';
 
-// https://github.com/lukePeavey/SplitType
-// https://codepen.io/rassohilber/pen/vYomWOp
-// https://easings.co/
-// https://codepen.io/collection/nqvwmG?cursor=eyJwYWdlIjoyfQ==
-// https://codepen.io/GreenSock/pen/ExLqENR
-// https://www.emailjs.com/docs/
-// https://wwilsman.github.io/Datepicker.js/
-// https://thehelpfultipper.com/build-an-amazing-custom-datepicker/
-// https://github.com/gdkraus/accessible-modal-dialog/blob/master/modal-window.js
-// https://github.com/medialize/ally.js/blob/master/src/maintain/tab-focus.js
-
 const lenis = new Lenis({
   direction: 'vertical',
   smooth: true,
@@ -87,7 +76,7 @@ app.innerHTML = `
         <p>
           <span class='float-action' tabindex='-1'>
             <button class='float-action-btn' aria-label='See more'>
-              <img src='${PlusIcon}' alt='Plus icon' />
+              <img src='${encodeURI(PlusIcon)}' alt='Plus icon' />
             </button>
           </span>
           Mixing a variety of traditional and modern drinks – from AMF's to pisco sours.
@@ -99,7 +88,7 @@ app.innerHTML = `
         <p>
           <span class='float-action' tabindex='-1'>
             <button class='float-action-btn' aria-label='See more'>
-              <img src='${PlusIcon}' alt='Plus icon' />
+              <img src='${encodeURI(PlusIcon)}' alt='Plus icon' />
             </button>
           </span>
           Curating specialty cocktails for any occasion, catered specifically to your liquor and flavor preferences.
@@ -111,7 +100,7 @@ app.innerHTML = `
         <p>
           <span class='float-action' tabindex='-1'>
             <button class='float-action-btn' aria-label='See more'>
-              <img src='${PlusIcon}' alt='Plus icon' />
+              <img src='${encodeURI(PlusIcon)}' alt='Plus icon' />
             </button>
           </span>
           Level 1 Cicerone beer server certification, bringing a wealth of beer tasting experience.
@@ -241,7 +230,7 @@ app.innerHTML = `
           <span id='drawer-title'>Default title</span>
           <span class='float-action${window.innerWidth > 992 ? ' large' : ''}' tabindex='-1'>
             <button class='float-action-btn' aria-label='Close'>
-              <img src='${CloseIcon}' alt='Close icon' />
+              <img src='${encodeURI(CloseIcon)}' alt='Close icon' />
             </button>
           </span>
         </h3>
@@ -262,7 +251,7 @@ app.innerHTML = `
         <span id='modal-title'>Book Us</span>
         <span class='float-action${window.innerWidth > 992 ? ' large' : ''}' tabindex='-1'>
             <button class='float-action-btn' aria-label='Close'>
-              <img src='${CloseIcon}' alt='Close icon' />
+              <img src='${encodeURI(CloseIcon)}' alt='Close icon' />
             </button>
           </span>
       </h3>
@@ -294,7 +283,7 @@ app.innerHTML = `
         </button>
       </form>
       <div class='modal-on-submit'>
-        <img src='${CheckmarkLarge}' />
+        <img src='${encodeURI(CheckmarkLarge)}' />
         <h3>Request submitted!</h3>
         <p>Your submission was successful, we'll try to get back to you as soon as we can. If you don't receive </p>
         <button id='modal-submit-confirm' class='btn-primary btn-primary-fab'>
