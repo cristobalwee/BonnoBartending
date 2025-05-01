@@ -31,6 +31,7 @@ import { toggleDrawer } from './drawer';
 import { InitServiceCards } from './services';
 import { InitLogo } from './logo';
 import { moveCarousel } from './carousel';
+import { pauseContent, playContent } from './constants';
 
 // https://github.com/lukePeavey/SplitType
 // https://codepen.io/rassohilber/pen/vYomWOp
@@ -161,6 +162,7 @@ app.innerHTML = `
       </div>
     </div>
     <button id='pause-carousel'><img src="${PauseIcon}" alt='Pause card carousel' /> Pause</button>
+    <span style='display: none;' id='carousel-play' data-cursor='play'></span>
   </div>
   <div class='section'></div>
   <nav id='nav-bar' class='hidden'>
@@ -176,7 +178,7 @@ app.innerHTML = `
       <a href='mailto:hello@bonnobartending.com' target='_blank' rel='noopener noreferrer'>
         <button class='btn-primary btn-primary-circle desktop-hide'>
           <div class='btn-primary-background'></div>
-          <img src="${Mail}" class='logo' alt='Bonno bartending logo' />
+          <img src="${Mail}" class='logo' alt='Email icon' />
         </button>
       </a>
     </div>
@@ -351,19 +353,54 @@ const carouselPause = document.querySelector('#pause-carousel');
 const carousel = document.querySelector('.background-details-inner');
 
 let carouselIsAnimating = false;
-let carouselInterval;
+let hasSetCarousel = false;
+let animationFrameId = null;
+let lastTime = null;
+const interval = 3000;
+
+const animateCarousel = (time) => {
+  if (!lastTime) lastTime = time;
+
+  const delta = time - lastTime;
+
+  if (delta >= interval) {
+    moveCarousel();
+    lastTime = time;
+  }
+
+  animationFrameId = requestAnimationFrame(animateCarousel);
+};
+
+const startCarousel = () => {
+  carouselIsAnimating = true;
+  lastTime = null;
+  requestAnimationFrame(animateCarousel);
+}
+
 const setCarousel = () => {
   if (carouselIsAnimating) {
     carouselIsAnimating = false;
-    return clearInterval(carouselInterval);
+    cancelAnimationFrame(animationFrameId);
+    lastTime = null;
+    return;
   }
 
-  carouselIsAnimating = true;
-  carouselInterval = setInterval(moveCarousel, 2800);
-  console.log('animate');
+  startCarousel();
+};
+
+const InitCarousel = () => {
+  if (carouselIsAnimating || hasSetCarousel) return;
+
+  startCarousel();
 }
 
 const setHoverAndCarousel = (dir, dataElem) => {
+  if (carouselIsAnimating) {
+    dataElem.setAttribute('data-cursor', 'pause');
+  } else {
+    dataElem.setAttribute('data-cursor', 'play');
+  }
+
   if (dir) {
     setCursorData(dataElem);
     isHovering = true;
@@ -378,7 +415,19 @@ const setHoverAndCarousel = (dir, dataElem) => {
   HideFab(cursorBackground, cursorTitle);
 }
 
-backgroundDetails.addEventListener('click', setCarousel);
+backgroundDetails.addEventListener('click', () => {
+  if (carouselIsAnimating) {
+    backgroundDetails.setAttribute('data-cursor', 'play');
+    carouselPause.innerHTML = playContent;
+    setCursorData(document.querySelector('#carousel-play'));
+  } else {
+    backgroundDetails.setAttribute('data-cursor', 'pause');
+    carouselPause.innerHTML = pauseContent;
+    setCursorData(backgroundDetails);
+  }
+
+  setCarousel();
+});
 
 backgroundDetails.addEventListener('keydown', (e) => {
   if (e.key === 'Enter') setCarousel();
@@ -388,12 +437,20 @@ backgroundDetails.addEventListener('mouseenter', () => setHoverAndCarousel(1, ba
 
 backgroundDetails.addEventListener('mouseleave', () => setHoverAndCarousel(0, backgroundDetails));
 
-carouselPause.addEventListener('click', setCarousel);
+carouselPause.addEventListener('click', () => {
+  if (carouselIsAnimating) {
+    carouselPause.innerHTML = playContent;
+  } else {
+    carouselPause.innerHTML = pauseContent;
+  }
+
+  setCarousel();
+});
 
 modalForm.addEventListener('submit', (e) => {
   e.preventDefault();
   modal.classList.add('submit');
-  emailjs.sendForm('service_vbbwvpy', 'template_o5diudg', '#booking-form').then(
+  emailjs.sendForm('service_qutbfzg', 'template_7dq07vi', '#booking-form').then(
     (response) => {
       console.log('SUCCESS!', response.status, response.text);
     },
@@ -469,7 +526,7 @@ window.addEventListener('resize', () => {
 
 InitSectionObservers('.about');
 InitSectionObservers('.services', window.innerWidth > 992 ? 0.6 : 0.2);
-InitSectionObservers('.background', 0.4, setCarousel);
+InitSectionObservers('.background', 0.4, InitCarousel);
 InitServiceCards(lenis, isHovering);
 InitLogo(lenis, isHovering);
 InitCursor();

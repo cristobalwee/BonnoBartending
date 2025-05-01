@@ -2,6 +2,7 @@ import EyeIcon from './assets/eye.svg';
 import ArrowDownIcon from './assets/arrow-down.svg';
 import ArrowUpIcon from './assets/arrow-up.svg';
 import PauseIcon from './assets/pause.svg';
+import PlayIcon from './assets/play.svg';
 import OldFashioned from './assets/old-fashioned.jpg';
 import Manhattan from './assets/manhattan.jpg';
 import Negroni from './assets/mezcal-negroni.jpg';
@@ -81,6 +82,10 @@ export const cursorData = {
     title: 'Pause',
     icon: PauseIcon
   },
+  play: {
+    title: 'Play',
+    icon: PlayIcon
+  },
   scroll: {
     title: 'Scroll down',
     icon: ArrowDownIcon
@@ -91,3 +96,5 @@ export const LOAD_TIME = 4500;
 export const elasticEase = 'elastic(1, 0.9)';
 export const CAROUSEL_STEP = 420;
 export const CAROUSEL_STEP_MOBILE = 274;
+export const playContent = `<img src="${PlayIcon}" alt='Play card carousel' /> Play`;
+export const pauseContent = `<img src="${PauseIcon}" alt='Pause card carousel' /> Pause`;

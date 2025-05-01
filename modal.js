@@ -69,13 +69,10 @@ export function toggleModal(triggerElem, open, onToggleEnd) {
   }
 
   function closeModalAnimation() {
-    modal.classList.remove("active");
+    modal.classList.remove('active');
+    modal.classList.remove('submit');
     triggerElem.classList.remove('active');
-    // gsap.to(modalContent, {
-    //   opacity: 0,
-    //   duration: 0.6,
-    //   ease: 'expo.out'
-    // });
+
     const state = Flip.getState(modalContent, { props: 'borderRadius' });
     Flip.fit(modalContent, triggerElem, { scale: true, props: 'borderRadius' });
 
@@ -83,7 +80,9 @@ export function toggleModal(triggerElem, open, onToggleEnd) {
       duration: 1,
       ease: 'expo.out',
       scale: true,
-      delay: 0.1
+      delay: 0.1,
+      opacity: 0,
+      onComplete: () => gsap.set(modalContent, { opacity: 0 })
     });
 
     // Remove focus trap when modal closes

@@ -75,3 +75,7 @@ export function setCursorData(elem) {
     icon.src = iconData;
   }
 };
+
+export function getPauseButton(isAnimating) {
+
+}
