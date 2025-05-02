@@ -299,9 +299,7 @@ app.innerHTML = `
 const fastScrollElement = document.querySelector('.fast-scroll');
 const heroImage = document.querySelector('.hero-image');
 const navBar = document.querySelector('#nav-bar');
-const springEase = 'expo.out'; //"elastic(0.3, 1)";
-
-console.log(encodeURI(CheckmarkLarge), CheckmarkLarge);
+const springEase = 'expo.out';
 
 const footer = document.querySelector('footer');
 const logoLoader = document.querySelector('.loader-inner-logo');
@@ -529,7 +527,6 @@ window.addEventListener('resize', () => {
       (window.innerWidth < 1200 && lastWidth >= 1200) || 
       (window.innerWidth >= 1200 && lastWidth < 1200)
     ) {
-      // carouselPos = 0;
       gsap.set(carousel, { x: 0, y: 0 });
     }
   }
