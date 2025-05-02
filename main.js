@@ -52,6 +52,7 @@ lenis.scrollTo(0);
 requestAnimationFrame(raf);
 
 const app = document.querySelector('#app');
+const CloseIconURL = new URL('./assets/close.svg', import.meta.url).href;
 
 app.innerHTML = `
   <div class='intro'>
@@ -230,7 +231,7 @@ app.innerHTML = `
           <span id='drawer-title'>Default title</span>
           <span class='float-action${window.innerWidth > 992 ? ' large' : ''}' tabindex='-1'>
             <button class='float-action-btn' aria-label='Close'>
-              <img src='${CloseIcon}' alt='Close icon' />
+              <img src='${CloseIconURL}' alt='Close icon' />
             </button>
           </span>
         </h3>
@@ -251,7 +252,7 @@ app.innerHTML = `
         <span id='modal-title'>Book Us</span>
         <span class='float-action${window.innerWidth > 992 ? ' large' : ''}' tabindex='-1'>
             <button class='float-action-btn' aria-label='Close'>
-              <img src='${CloseIcon}' alt='Close icon' />
+              <img src='${CloseIconURL}' alt='Close icon' />
             </button>
           </span>
       </h3>
