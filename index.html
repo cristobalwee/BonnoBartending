@@ -2,7 +2,7 @@
 <html lang="en" style="background-color: #383343;">
   <head>
     <!-- Google Tag Manager -->
-    <script defer>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    <script async>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
@@ -10,7 +10,7 @@
     <!-- End Google Tag Manager -->
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-ES7H6K4H51"></script>
-    <script>
+    <script async>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
@@ -21,6 +21,10 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/assets/Favicon.svg" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="preload" as="image" href="/assets/hero.jpg">
+    <link rel="preload" href="/assets/fonts/GT-Eesti-Display-Regular.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/assets/fonts/GT-Eesti-Display-Thin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/assets/fonts/GT-Super-Text-Regular-Italic.woff2" as="font" type="font/woff2" crossorigin>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <meta property="og:title" content="Bonno Bartending">
@@ -70,7 +74,7 @@
     <script type="text/javascript"
       src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
     </script>
-    <script type="text/javascript">
+    <script async type="text/javascript">
       (function(){
         emailjs.init({
           publicKey: "zNCcjpRKOzBoI7rgM",
