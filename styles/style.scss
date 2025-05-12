@@ -1020,6 +1020,7 @@ footer {
 
     &-logo {
       height: max(6rem, 8vh);
+      width: auto;
       transform: translateY(20%);
       opacity: 0;
       transition: transform 0.6s $ease, opacity 0.6s $ease;
@@ -1051,6 +1052,7 @@ footer {
     transform-origin: top;
 
     &-drink {
+      width: auto;
       max-height: 50%;
       mix-blend-mode: luminosity;
     }

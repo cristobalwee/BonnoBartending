@@ -63,7 +63,7 @@ app.innerHTML = `
       <div class='btn-primary-background word'></div>
       <span class='word'>Book us</span>
     </button>
-    <img src='${Hero}' height='866' width='1425' class='hero-image fast-scroll line has-overflow' alt='Hero image; a well-dressed bartender mixing a cocktail' />
+    <img src='${Hero}' class='hero-image fast-scroll line has-overflow' alt='Hero image; a well-dressed bartender mixing a cocktail' />
   </div>
   <div class='about section'>
     <p class='line'><span class='word' style='display: block'>For free? What’s the catch?</span></p>
@@ -81,7 +81,7 @@ app.innerHTML = `
           </span>
           Mixing a variety of traditional and modern drinks – from AMF's to pisco sours.
         </p>
-        <img height='346' width='484' src='${MixologyImg}' class='services-card-img' alt='A classic highball cocktail' />
+        <img src='${MixologyImg}' class='services-card-img' alt='A classic highball cocktail' />
         <h4 class='strong'>Mixology</h4>
       </div>
       <div class='services-card' data-index='1' data-cursor='see_more'>
@@ -93,7 +93,7 @@ app.innerHTML = `
           </span>
           Curating specialty cocktails for any occasion, catered specifically to your liquor and flavor preferences.
         </p>
-        <img height='346' width='484' src='${MenuImg}' class='services-card-img' alt='A group of classic cocktails standing side-to-side' />
+        <img src='${MenuImg}' class='services-card-img' alt='A group of classic cocktails standing side-to-side' />
         <h4 class='strong'>Menu creation</h4>
       </div>
       <div class='services-card' data-index='2' data-cursor='see_more'>
@@ -105,7 +105,7 @@ app.innerHTML = `
           </span>
           Level 1 Cicerone beer server certification, bringing a wealth of beer tasting experience.
         </p>
-        <img height='346' width='484' src='${BeerImg}' class='services-card-img' alt='A crisp lager in a tall glass' />
+        <img src='${BeerImg}' class='services-card-img' alt='A crisp lager in a tall glass' />
         <h4 class='strong'>Beer sommelier</h4>
       </div>
     </div>
@@ -166,7 +166,7 @@ app.innerHTML = `
   </div>
   <div class='section'></div>
   <nav id='nav-bar' class='hidden'>
-    <img width='84' height='84' src="${Logo}" id='logo' class='logo' alt='Bonno bartending logo' data-cursor='top' />
+    <img src="${Logo}" id='logo' class='logo' alt='Bonno bartending logo' data-cursor='top' />
     <div class='btn-container'>
       <a href='mailto:hello@bonnobartending.com' target='_blank' rel='noopener noreferrer'>
         <button class='btn-primary mobile-hide'>
@@ -194,31 +194,31 @@ app.innerHTML = `
   <div class='hover-cursor'>
     <div class='hover-cursor-background'></div>
     <div class='hover-cursor-content'>
-      <img width='20' height='20' id='hover-cursor-icon' src='${EyeIcon}' alt='See more' />
+      <img id='hover-cursor-icon' src='${EyeIcon}' alt='See more' />
       <p id='hover-cursor-title'>See more</p>
-      <img width='20' height='20' id='hover-cursor-ext' src='${ArrowExt}' alt='View' />
+      <img id='hover-cursor-ext' src='${ArrowExt}' alt='View' />
     </div>
   </div>
   <div class='loader'>
     <div class='loader-inner'>
-      <img width='118' height='118' draggable='false' src="${Logo}" class='loader-inner-logo' alt='Bonno bartending logo' />
+      <img draggable='false' src="${Logo}" class='loader-inner-logo' alt='Bonno bartending logo' />
       <div class='loader-card'>
-        <img width='26' height='26' draggable='false' src="${Logo}" class='logo' alt='Bonno bartending logo' />
-        <img width='190' height='190' draggable='false' src="${Negroni}" class='loader-card-drink' alt='Negroni' />
+        <img draggable='false' src="${Logo}" class='logo' alt='Bonno bartending logo' />
+        <img draggable='false' src="${Negroni}" class='loader-card-drink' alt='Negroni' />
         <h4 class='strong'>Negroni</h4>
-        <img width='26' height='26' draggable='false' src="${Logo}" class='logo' alt='Bonno bartending logo' />
+        <img draggable='false' src="${Logo}" class='logo' alt='Bonno bartending logo' />
       </div>
       <div class='loader-card'>
-        <img width='26' height='26' draggable='false' src="${Logo}" class='logo' alt='Bonno bartending logo' />
-        <img width='190' height='190' draggable='false' src="${OldFashioned}" class='loader-card-drink' alt='Old fashioned' />
+        <img draggable='false' src="${Logo}" class='logo' alt='Bonno bartending logo' />
+        <img draggable='false' src="${OldFashioned}" class='loader-card-drink' alt='Old fashioned' />
         <h4 class='strong'>Old Fashioned</h4>
-        <img width='26' height='26' draggable='false' src="${Logo}" class='logo' alt='Bonno bartending logo' />
+        <img draggable='false' src="${Logo}" class='logo' alt='Bonno bartending logo' />
       </div>
       <div class='loader-card'>
-        <img width='26' height='26' draggable='false' src="${Logo}" class='logo' alt='Bonno bartending logo' />
-        <img width='190' height='190' draggable='false' src="${French}" class='loader-card-drink' alt='French 75' />
+        <img draggable='false' src="${Logo}" class='logo' alt='Bonno bartending logo' />
+        <img draggable='false' src="${French}" class='loader-card-drink' alt='French 75' />
         <h4 class='strong'>French 75</h4>
-        <img width='26' height='26' draggable='false' src="${Logo}" class='logo' alt='Bonno bartending logo' />
+        <img draggable='false' src="${Logo}" class='logo' alt='Bonno bartending logo' />
       </div>
     </div>
   </div>
